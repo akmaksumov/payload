@@ -55,7 +55,13 @@ import { connect } from './connect.js'
 
 export { sql } from 'drizzle-orm'
 
-export function vercelPostgresAdapter(args: Args): DatabaseAdapterObj<VercelPostgresAdapter> {
+/**
+ * Creates a Vercel Postgres Adapter
+ *
+ * If args are not provided, vercel/postgres will attempt to load
+ * the connection string from the `DATABASE_URL` environment variable.
+ */
+export function vercelPostgresAdapter(args: Args = {}): DatabaseAdapterObj<VercelPostgresAdapter> {
   const postgresIDType = args.idType || 'serial'
   const payloadIDType = postgresIDType === 'serial' ? 'number' : 'text'
 

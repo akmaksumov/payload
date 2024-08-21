@@ -8,14 +8,18 @@ import type {
 import type { DrizzleAdapter } from '@payloadcms/drizzle/types'
 import type { DrizzleConfig } from 'drizzle-orm'
 import type { PgSchema, PgTableFn, PgTransactionConfig } from 'drizzle-orm/pg-core'
-import type { Pool, PoolConfig } from 'pg'
+import type { Pool } from 'pg'
 
 export type Args = {
   idType?: 'serial' | 'uuid'
   localesSuffix?: string
   logger?: DrizzleConfig['logger']
   migrationDir?: string
-  pool: PoolConfig
+  /**
+   * If not provided, vercel/postgres will attempt to load
+   * the connection string from the `DATABASE_URL` environment variable.
+   */
+  pool?: Pool
   prodMigrations?: {
     down: (args: MigrateDownArgs) => Promise<void>
     name: string
@@ -51,8 +55,7 @@ declare module 'payload' {
     localesSuffix?: string
     logger: DrizzleConfig['logger']
     pgSchema?: { table: PgTableFn } | PgSchema
-    pool: Pool
-    poolOptions: Args['pool']
+    pool?: Pool
     prodMigrations?: {
       down: (args: MigrateDownArgs) => Promise<void>
       name: string
